@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  jounalbeat:
+    build: .
+    image: jounalbeat
+    container_name: jounalbeat
+    volumes:
+      - ./jounalbeat.yml:/usr/share/jounalbeat/jounalbeat.yml
+    networks: ['es-net']
+    external_links: ['es01', 'es02', 'es03', 'kibana']
+    healthcheck:
+      test: jounalbeat test config
+      interval: 60s
+      timeout: 30s
+      retries: 5
+
+networks:
+  es-net:
+    external: true
+    name: es-net

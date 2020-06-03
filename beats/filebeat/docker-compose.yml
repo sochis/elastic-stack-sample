@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  filebeat:
+    build: .
+    image: filebeat
+    container_name: filebeat
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - /var/log/:/var/log/:ro
+    networks: ['es-net']
+    external_links: ['es01', 'es02', 'es03', 'kibana']
+    healthcheck:
+      test: filebeat test config
+      interval: 60s
+      timeout: 30s
+      retries: 5
+
+networks:
+  es-net:
+    external: true
+    name: es-net

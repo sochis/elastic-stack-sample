@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  auditbeat:
+    build: .
+    image: auditbeat
+    container_name: auditbeat
+    volumes:
+      - ./auditbeat.yml:/usr/share/auditbeat/auditbeat.yml
+    cap_add: ['AUDIT_CONTROL', 'AUDIT_READ']
+    pid: host
+    networks: ['es-net']
+    external_links: ['es01', 'es02', 'es03', 'kibana']
+    healthcheck:
+      test: auditbeat test config
+      interval: 60s
+      timeout: 30s
+      retries: 5
+
+networks:
+  es-net:
+    external: true
+    name: es-net

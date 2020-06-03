@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  metricbeat:
+    build: .
+    image: metricbeat
+    container_name: metricbeat
+    volumes:
+      - ./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+    networks: ['es-net']
+    external_links: ['es01', 'es02', 'es03', 'kibana']
+    healthcheck:
+      test: metricbeat test config
+      interval: 60s
+      timeout: 30s
+      retries: 5
+
+networks:
+  es-net:
+    external: true
+    name: es-net

@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  packetbeat:
+    build: .
+    image: packetbeat
+    container_name: packetbeat
+    volumes:
+      - ./packetbeat.yml:/usr/share/packetbeat/packetbeat.yml
+    cap_add: ['NET_RAW', 'NET_ADMIN']
+    networks: ['es-net']
+    external_links: ['es01', 'es02', 'es03', 'kibana']
+    healthcheck:
+      test: packetbeat test config
+      interval: 60s
+      timeout: 30s
+      retries: 5
+
+networks:
+  es-net:
+    external: true
+    name: es-net

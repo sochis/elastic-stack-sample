@@ -1,0 +1,17 @@
+#
+# ** THIS IS AN AUTO-GENERATED FILE **
+#
+
+# Default Kibana configuration for docker target
+server.name: kibana
+server.host: "0"
+elasticsearch.hosts: [ "http://es01:9200" ]
+
+# elasticsearch.password is stored in `kibana.keystore`
+#elasticsearch.username: kibana
+#elasticsearch.ssl.certificateAuthorities: ["/usr/share/kibana/config/certs/ca/ca.crt"]
+#server.ssl.enabled: false
+#server.ssl.certificate: /usr/share/kibana/config/certs/kibana/kibana.crt
+#server.ssl.key: /usr/share/kibana/config/certs/kibana/kibana.key
+#xpack.monitoring.enabled: true
+#xpack.monitoring.ui.container.elasticsearch.enabled: true
