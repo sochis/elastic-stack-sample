@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  create_certs:
+    image: $IMG_ELASTICSEARCH:$ELASTIC_VERSION
+    container_name: create_certs
+    command: >
+      bash -c '
+        yum install -y -q -e 0 unzip;
+        if [[ ! -f /certs/bundle.zip ]]; then
+          bin/elasticsearch-certutil cert --silent --pem --in config/certificates/instances.yml -out /certs/bundle.zip;
+          unzip /certs/bundle.zip -d /certs;
+        fi;
+        chown -R 1000:0 /certs
+      '
+    working_dir: /usr/share/elasticsearch
+    volumes:
+      - es-certs:/certs
+      - ./certificates:/usr/share/elasticsearch/config/certificates
+    networks:
+      - es-net
+
+volumes:
+  es-certs:
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/mnt/develop/data/es-certs'
+
+networks:
+  es-net:
+    name: es-net

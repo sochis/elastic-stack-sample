@@ -2,8 +2,9 @@ version: "3.7"
 
 services:
   auditbeat:
-    build: .
-    image: auditbeat
+    image: $IMG_AUDITBEAT:$ELASTIC_VERSION
+    user: root
+    command : bash -c "exec auditbeat -e --strict.perms=false"
     container_name: auditbeat
     volumes:
       - ./auditbeat.yml:/usr/share/auditbeat/auditbeat.yml

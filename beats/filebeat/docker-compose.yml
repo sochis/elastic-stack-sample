@@ -2,8 +2,7 @@ version: "3.7"
 
 services:
   filebeat:
-    build: .
-    image: filebeat
+    image: $IMG_FILEBEAT:$ELASTIC_VERSION
     container_name: filebeat
     volumes:
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml

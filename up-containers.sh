@@ -1,6 +1,12 @@
-# Scritp that make docker containers being up.
+# Script that make docker containers being up.
 
-docker-compose up -d
+# create certification for elascticsearch
+docker-compose -f elasticsearch/create-certs.yml run --rm create_certs
+
+# Up another containers
+docker-compose -f elasticsearch/docker-compose.yml up -d
+docker-compose -f enterprise-search/docker-compose.yml up -d
+docker-compose -f kibana/docker-compose.yml up -d
 docker-compose -f logstash/docker-compose.yml up -d
 docker-compose -f beats/auditbeat/docker-compose.yml up -d
 docker-compose -f beats/filebeat/docker-compose.yml up -d

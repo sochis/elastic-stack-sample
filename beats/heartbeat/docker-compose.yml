@@ -2,8 +2,7 @@ version: "3.7"
 
 services:
   heartbeat:
-    build: .
-    image: heartbeat
+    image: $IMG_HEARTBEAT:$ELASTIC_VERSION
     container_name: heartbeat
     volumes:
       - ./heartbeat.yml:/usr/share/heartbeat/heartbeat.yml

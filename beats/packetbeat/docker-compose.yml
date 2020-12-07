@@ -2,8 +2,7 @@ version: "3.7"
 
 services:
   packetbeat:
-    build: .
-    image: packetbeat
+    image: $IMG_PACKETBEAT:$ELASTIC_VERSION
     container_name: packetbeat
     volumes:
       - ./packetbeat.yml:/usr/share/packetbeat/packetbeat.yml

@@ -2,8 +2,7 @@ version: "3.7"
 
 services:
   jounalbeat:
-    build: .
-    image: jounalbeat
+    image: $IMG_JOURNALBEAT:$ELASTIC_VERSION
     container_name: jounalbeat
     volumes:
       - ./jounalbeat.yml:/usr/share/jounalbeat/jounalbeat.yml

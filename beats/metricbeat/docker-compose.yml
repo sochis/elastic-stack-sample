@@ -2,8 +2,7 @@ version: "3.7"
 
 services:
   metricbeat:
-    build: .
-    image: metricbeat
+    image: $IMG_METRICBEAT:$ELASTIC_VERSION
     container_name: metricbeat
     volumes:
       - ./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml

@@ -1,0 +1,10 @@
+ent_search.auth.source: standard
+elasticsearch.host: https://es01:9200
+elasticsearch.username: elastic
+elasticsearch.password: ${ELASTIC_PASSWORD}
+elasticsearch.ssl.enabled: true
+elasticsearch.ssl.verify: false
+elasticsearch.ssl.certificate_authority: "${CERTS_DIR}/ca/ca.crt"
+allow_es_settings_modification: true
+# openssl rand -hex 32
+secret_management.encryption_keys: [7e925a5df81e3b5d9db6aa225c14f4565228665649fe70125ac3f7be91043511, b9a3b5b0dd523cefba9fd695d36d33adceeb091acb0097538d5f2657bd61436f]

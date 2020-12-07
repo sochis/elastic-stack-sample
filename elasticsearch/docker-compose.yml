@@ -1,0 +1,126 @@
+version: "3.7"
+
+services:
+  es01:
+    build: 
+      context: .
+      args:
+        - ELASTIC_VERSION=${ELASTIC_VERSION}
+        - IMG_ELASTICSEARCH=${IMG_ELASTICSEARCH}
+        - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    image: elasticsearch:${ELASTIC_VERSION} 
+    container_name: es01
+    restart: always
+    environment:
+      - node.name=es01
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - CERTS_DIR=$CERTS_DIR
+      - xpack.security.http.ssl.key=$CERTS_DIR/es01/es01.key
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/es01/es01.crt
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/es01/es01.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/es01/es01.key
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data01:/usr/share/elasticsearch/data
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - es-certs:$CERTS_DIR
+    ports:
+      - 9200:9200
+    networks:
+      - es-net
+  es02:
+    build: 
+      context: .
+      args:
+        - ELASTIC_VERSION=${ELASTIC_VERSION}
+        - IMG_ELASTICSEARCH=${IMG_ELASTICSEARCH}
+    image: elasticsearch
+    container_name: es02
+    restart: always
+    environment:
+      - node.name=es02
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - CERTS_DIR=$CERTS_DIR
+      - xpack.security.http.ssl.key=$CERTS_DIR/es02/es02.key
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/es02/es02.crt
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/es02/es02.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/es02/es02.key
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data02:/usr/share/elasticsearch/data
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - es-certs:$CERTS_DIR
+    ports:
+      - 9201:9201
+    networks:
+      - es-net
+  es03:
+    build: 
+      context: .
+      args:
+        - ELASTIC_VERSION=${ELASTIC_VERSION}
+        - IMG_ELASTICSEARCH=${IMG_ELASTICSEARCH}
+    image: elasticsearch
+    container_name: es03
+    restart: always
+    environment:
+      - node.name=es03
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - CERTS_DIR=$CERTS_DIR
+      - xpack.security.http.ssl.key=$CERTS_DIR/es03/es03.key
+      - xpack.security.http.ssl.certificate=$CERTS_DIR/es03/es03.crt
+      - xpack.security.transport.ssl.certificate=$CERTS_DIR/es03/es03.crt
+      - xpack.security.transport.ssl.key=$CERTS_DIR/es03/es03.key
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data03:/usr/share/elasticsearch/data
+      - ./config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - es-certs:$CERTS_DIR
+    ports:
+      - 9202:9202
+    networks:
+      - es-net 
+
+volumes:
+  es-data01:
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/mnt/develop/data/es-data01'
+  es-data02:
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/mnt/develop/data/es-data02'
+  es-data03:
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/mnt/develop/data/es-data03'
+  es-certs:
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/mnt/develop/data/es-certs'
+
+networks:
+  es-net:
+    name: es-net
