@@ -8,4 +8,5 @@ docker-compose -f beats/filebeat/docker-compose.yml down
 docker-compose -f beats/auditbeat/docker-compose.yml down
 docker-compose -f logstash/docker-compose.yml down
 docker-compose -f kibana/docker-compose.yml down
+docker-compose -f enterprise-search/docker-compose.yml down
 docker-compose -f elasticsearch/docker-compose.yml down
