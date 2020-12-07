@@ -40,7 +40,7 @@ services:
       args:
         - ELASTIC_VERSION=${ELASTIC_VERSION}
         - IMG_ELASTICSEARCH=${IMG_ELASTICSEARCH}
-    image: elasticsearch
+    image: elasticsearch:${ELASTIC_VERSION} 
     container_name: es02
     restart: always
     environment:
@@ -72,7 +72,7 @@ services:
       args:
         - ELASTIC_VERSION=${ELASTIC_VERSION}
         - IMG_ELASTICSEARCH=${IMG_ELASTICSEARCH}
-    image: elasticsearch
+    image: elasticsearch:${ELASTIC_VERSION} 
     container_name: es03
     restart: always
     environment:
